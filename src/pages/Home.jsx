@@ -70,6 +70,7 @@ const Home = () => {
 
   return (
     <div className="w-full px-4 py-6 max-w-[1150px] mx-auto">
+      
       <Hero events={sliderEvents} />
       <Filters filters={filters} setFilters={setFilters} cityList={cityList} />
       
