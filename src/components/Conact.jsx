@@ -48,7 +48,7 @@ const Conact = () => {
           <div className="flex justify-center pt-4 pb-2">
             <div className="bg-black rounded-full px-1 py-1">
               <button className="bg-[#2ECC71] text-black px-20 py-1 rounded-full text-xl hover:bg-white hover:text-[#2ECC71] transition">
-                Load More
+                Submit
               </button>
             </div>
           </div>

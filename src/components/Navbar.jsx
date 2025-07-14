@@ -7,7 +7,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="px-4 sm:px-6 md:px-8 lg:px-14 bg-black text-white sticky top-0 z-50 ">
+    <div className="px-4 sm:px-6 md:px-8 lg:px-14 bg-black text-white sticky top-0 z-50  ">
       <div className="max-w-6xl mx-auto flex items-center justify-between py-4">
         
      
@@ -28,8 +28,8 @@ const Navbar = () => {
             List Your Event
           </a>
 
-          <CiGlobe className="text-2xl" />
-          <CgProfile className="text-2xl" />
+          <CiGlobe className="text-2xl cursor-pointer" />
+          <CgProfile className="text-2xl cursor-pointer " />
         </div>
 
         <div className="md:hidden">
@@ -47,13 +47,14 @@ const Navbar = () => {
           <a href="/" className="block hover:text-[#2ECC71]">Explore</a>
           <a href="/" className="block hover:text-[#2ECC71]">Artist Bookings</a>
           <a href="/" className="block hover:text-[#2ECC71]">Event Management</a>
+          <a href="/" className="block hover:text-[#2ECC71]">Event Management</a>
           <a
             href="#"
             className="block text-center bg-[#2ECC71] text-black font-semibold px-4 py-2 rounded-full hover:bg-white hover:text-[#2ECC71] transition duration-300"
           >
             List Your Event
           </a>
-          <div className="flex space-x-4 text-2xl pt-2">
+          <div className="flex space-x-4 text-2xl pt-2 cursor-pointer">
             <CiGlobe />
             <CgProfile />
           </div>
