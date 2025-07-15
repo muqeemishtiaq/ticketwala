@@ -25,7 +25,7 @@ const Home = () => {
     try {
       const params = {
         countryCode: "US",
-        size: 50, // Fetch more to ensure diverse locations
+        size: 10, 
         sort: "random",
       };
 
@@ -65,19 +65,33 @@ const Home = () => {
     try {
       const params = {
         countryCode: "US",
-        size: 200, // Fetch more to get comprehensive city list
+        size: 10, 
+        page: 0,
       };
       
-      const data = await fetchEvents(params);
-      const cities = Array.from(
-        new Set(
-          data
-            .map((event) => event._embedded?.venues?.[0]?.city?.name)
-            .filter(city => city && city !== "Unknown")
-        )
-      ).sort();
+      let allCities = new Set();
+      let hasMoreCities = true;
+      let currentPage = 0;
       
-      setCityList(cities);
+     
+      while (hasMoreCities && currentPage < 10) { 
+        const data = await fetchEvents({
+          ...params,
+          page: currentPage
+        });
+        
+        data.forEach((event) => {
+          const city = event._embedded?.venues?.[0]?.city?.name;
+          if (city && city !== "Unknown") {
+            allCities.add(city);
+          }
+        });
+        
+        hasMoreCities = data.length >= 10;
+        currentPage++;
+      }
+      
+      setCityList(Array.from(allCities).sort());
     } catch (error) {
       console.error("Error fetching cities:", error);
     }
@@ -91,39 +105,19 @@ const Home = () => {
     try {
       const params = {
         countryCode: "US",
-        size: 20, // Increased size to get more diverse results
+        size: 10, 
         page: loadPage,
         keyword: filters.keyword || undefined,
         city: filters.city || undefined,
         startDateTime: filters.start ? `${filters.start}T00:00:00Z` : undefined,
         endDateTime: filters.end ? `${filters.end}T23:59:59Z` : undefined,
-        sort: "date,asc", // Always sort by date for consistency
+        sort: "date,asc",
       };
 
       const data = await fetchEvents(params);
+      const formatted = data.map(formatEvent);
       
-      // For city filter, we want all events from that city
-      // For no city filter, we want diverse cities
-      let formatted = data.map(formatEvent);
-      
-      if (!filters.city) {
-        // When no city filter, ensure diverse cities in results
-        const uniqueCityEvents = [];
-        const cities = new Set();
-        
-        for (const event of formatted) {
-          if (!cities.has(event.city)) {
-            cities.add(event.city);
-            uniqueCityEvents.push(event);
-          } else {
-            uniqueCityEvents.push(event);
-          }
-          if (uniqueCityEvents.length >= 10) break;
-        }
-        formatted = uniqueCityEvents;
-      }
-
-      setHasMore(data.length >= 20);
+      setHasMore(data.length >= 10);
 
       if (reset) {
         setFilteredEvents(formatted);
